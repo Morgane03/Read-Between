@@ -1,0 +1,12 @@
+name: Unity CI
+
+on:
+  pull_request:
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Dire bonjour
+        run: echo "Hello Unity CI !"
