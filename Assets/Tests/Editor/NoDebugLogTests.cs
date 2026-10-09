@@ -6,11 +6,6 @@ public class NoDebugLogTests
     [Test]
     public void No_Debug_Log_Should_Be_Present()
     {
-        if (!file.StartsWith("Assets"))
-            continue;
-        else if (file.StartsWith("Assets/Tests/"))
-            continue;
-
         string[] files = Directory.GetFiles(
             "Assets",
             "*.cs",
@@ -18,7 +13,11 @@ public class NoDebugLogTests
 
         foreach (string file in files)
         {
-            if (file.Contains("/Tests/"))
+            // Ignore les tests
+            if (!file.StartsWith("Assets"))
+                continue;
+
+            if (file.StartsWith("Assets/Tests/"))
                 continue;
 
             string code = File.ReadAllText(file);
