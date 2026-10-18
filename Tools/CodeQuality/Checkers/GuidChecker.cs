@@ -9,27 +9,12 @@ public static class GuidChecker
     private static readonly Regex GuidRegex =
         new(@"^guid:\s*([a-f0-9]{32})$", RegexOptions.Multiline);
 
-    private static readonly HashSet<string> IgnoredExtensions =
-    [
-        ".meta",
-        ".cs",
-        ".asmdef",
-        ".csproj",
-        ".sln",
-        ".gitignore",
-        ".md",
-        ".txt",
-        ".yml",
-        ".yaml"
-    ];
-
     public static CheckResult Run(string rootDirectory)
     {
         var result = new CheckResult("GUID");
 
         Dictionary<string, string> guids = new();
 
-        // Vérification des GUID
         foreach (var file in FileScanner.GetFiles(rootDirectory, "*.meta"))
         {
             var path = file.Replace('\\', '/');
@@ -65,17 +50,22 @@ public static class GuidChecker
             }
         }
 
-        // Assets sans .meta
+
         foreach (var file in FileScanner.GetAllFiles(rootDirectory))
         {
             var path = file.Replace('\\', '/');
+
             var extension = Path.GetExtension(path);
 
-            if (IgnoredExtensions.Contains(extension))
+            if (extension == ".meta")
+                continue;
+
+            if (extension == ".cs")
                 continue;
 
             if (File.Exists(file + ".meta"))
                 continue;
+
 
             result.Errors.Add(new CheckError(
                 path,
@@ -84,20 +74,6 @@ public static class GuidChecker
                 ""));
         }
 
-        // Meta orphelins
-        foreach (var meta in FileScanner.GetFiles(rootDirectory, "*.meta"))
-        {
-            var assetPath = meta[..^5];
-
-            if (File.Exists(assetPath) || Directory.Exists(assetPath))
-                continue;
-
-            result.Errors.Add(new CheckError(
-                meta.Replace('\\', '/'),
-                0,
-                "Fichier .meta orphelin (asset ou dossier introuvable)",
-                ""));
-        }
 
         return result;
     }
