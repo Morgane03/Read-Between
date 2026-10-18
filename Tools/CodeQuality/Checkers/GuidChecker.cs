@@ -66,24 +66,9 @@ public static class GuidChecker
         }
 
         // Assets sans .meta
-        foreach (var file in Directory.GetFiles(
-                     rootDirectory,
-                     "*",
-                     SearchOption.AllDirectories))
+        foreach (var file in FileScanner.GetAllFiles(rootDirectory))
         {
             var path = file.Replace('\\', '/');
-
-            if (path.Contains("/Library/") ||
-                path.Contains("/Logs/") ||
-                path.Contains("/Temp/") ||
-                path.Contains("/obj/") ||
-                path.Contains("/bin/") ||
-                path.Contains("/Packages/") ||
-                path.Contains("/ProjectSettings/") ||
-                path.Contains("/UserSettings/") ||
-                path.Contains("/Tools/CodeQuality/"))
-                continue;
-
             var extension = Path.GetExtension(path);
 
             if (IgnoredExtensions.Contains(extension))
@@ -104,7 +89,7 @@ public static class GuidChecker
         {
             var asset = meta[..^5];
 
-            if (File.Exists(asset))
+            if (File.Exists(asset) || Directory.Exists(asset))
                 continue;
 
             result.Errors.Add(new CheckError(

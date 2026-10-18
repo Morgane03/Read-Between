@@ -15,8 +15,12 @@ public static class FileScanner
         "/ProjectSettings/",
         "/UserSettings/",
         "/Tools/CodeQuality/",
-        "/Assets/Tests/"
+        "/Assets/Tests/",
+        "/.git/",
+        "/.github/",
+        "/.vscode/"
     };
+
 
     public static IEnumerable<string> GetFiles(
         string rootDirectory,
@@ -31,12 +35,39 @@ public static class FileScanner
         {
             var path = file.Replace('\\', '/');
 
-            bool ignored = IgnoredFolders.Any(folder => path.Contains(folder));
+            if (IsIgnored(path))
+                continue;
 
-            if (!ignored)
-                yield return file;
+            yield return file;
         }
     }
+
+
+    public static IEnumerable<string> GetAllFiles(string rootDirectory)
+    {
+        var files = Directory.GetFiles(
+            rootDirectory,
+            "*",
+            SearchOption.AllDirectories);
+
+        foreach (var file in files)
+        {
+            var path = file.Replace('\\', '/');
+
+            if (IsIgnored(path))
+                continue;
+
+            yield return file;
+        }
+    }
+
+
+    private static bool IsIgnored(string path)
+    {
+        return IgnoredFolders.Any(folder =>
+            path.Contains(folder));
+    }
+
 
     public static IEnumerable<SourceLine> ReadLines(
         string rootDirectory,
