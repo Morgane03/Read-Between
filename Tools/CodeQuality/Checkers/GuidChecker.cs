@@ -89,13 +89,15 @@ public static class GuidChecker
         {
             var asset = meta[..^5];
 
-            if (File.Exists(asset) || Directory.Exists(asset))
+            var assetPath = asset.Replace('\\', '/');
+
+            if (File.Exists(assetPath) || Directory.Exists(assetPath))
                 continue;
 
             result.Errors.Add(new CheckError(
                 meta.Replace('\\', '/'),
                 0,
-                "Fichier .meta orphelin",
+                "Fichier .meta orphelin (asset ou dossier introuvable)",
                 ""));
         }
 
