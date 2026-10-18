@@ -87,9 +87,7 @@ public static class GuidChecker
         // Meta orphelins
         foreach (var meta in FileScanner.GetFiles(rootDirectory, "*.meta"))
         {
-            var asset = meta[..^5];
-
-            var assetPath = asset.Replace('\\', '/');
+            var assetPath = meta[..^5];
 
             if (File.Exists(assetPath) || Directory.Exists(assetPath))
                 continue;
