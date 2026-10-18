@@ -11,6 +11,7 @@ var results = new List<CheckResult>
     DebugLogChecker.Run("."),
     TodoChecker.Run("."),
     JsonChecker.Run("."),
+    GuidChecker.Run("."),
 };
 
 bool hasErrors = false;
