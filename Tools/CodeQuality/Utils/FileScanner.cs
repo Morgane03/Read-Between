@@ -18,7 +18,9 @@ public static class FileScanner
         "/Assets/Tests/",
         "/.git/",
         "/.github/",
-        "/.vscode/"
+        "/.vscode/",
+        "./README.md",
+        " ./.gitignore",
     };
 
 
