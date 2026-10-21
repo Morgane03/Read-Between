@@ -4,12 +4,12 @@ using CodeQuality.Utils;
 
 namespace CodeQuality.Checkers;
 
-public static class GuidChecker
+public sealed class GuidChecker : IChecker
 {
     private static readonly Regex GuidRegex =
         new(@"^guid:\s*([a-f0-9]{32})$", RegexOptions.Multiline);
 
-    public static CheckResult Run(string rootDirectory)
+    public CheckResult Run(string rootDirectory)
     {
         var result = new CheckResult("GUID");
 

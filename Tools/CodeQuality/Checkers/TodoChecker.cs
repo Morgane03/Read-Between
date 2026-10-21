@@ -4,7 +4,7 @@ using CodeQuality.Utils;
 
 namespace CodeQuality.Checkers;
 
-public static class TodoChecker
+public sealed class TodoChecker : IChecker
 {
     private static readonly Regex TodoRegex =
         new(@"\b(TODO|FIXME|HACK|TEMP)\b");
@@ -12,7 +12,7 @@ public static class TodoChecker
     private static readonly Regex CommentRegex =
         new(@"^\s*(//|///|/\*|\*)");
 
-    public static CheckResult Run(string rootDirectory)
+    public CheckResult Run(string rootDirectory)
     {
         var result = new CheckResult("TODO");
 

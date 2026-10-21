@@ -6,18 +6,21 @@ Console.WriteLine(" Read-Between Code Quality");
 Console.WriteLine("=================================");
 Console.WriteLine();
 
-var results = new List<CheckResult>
-{
-    DebugLogChecker.Run("."),
-    TodoChecker.Run("."),
-    JsonChecker.Run("."),
-    GuidChecker.Run("."),
-};
+IChecker[] checkers =
+[
+    new DebugLogChecker(),
+    new TodoChecker(),
+    new JsonChecker(),
+    new GuidChecker(),
+    new UnityReferenceChecker()
+];
 
 bool hasErrors = false;
 
-foreach (var result in results)
+foreach (var checker in checkers)
 {
+    var result = checker.Run(".");
+
     if (result.Success)
     {
         Console.WriteLine($"✅ {result.Name}");
@@ -41,9 +44,4 @@ foreach (var result in results)
     Console.WriteLine("---------------------------------");
 }
 
-if (hasErrors)
-{
-    Environment.Exit(1);
-}
-
-Console.WriteLine("Tous les contrôles sont validés.");
+Environment.Exit(hasErrors ? 1 : 0);

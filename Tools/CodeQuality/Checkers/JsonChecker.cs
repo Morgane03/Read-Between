@@ -4,9 +4,9 @@ using CodeQuality.Utils;
 
 namespace CodeQuality.Checkers;
 
-public static class JsonChecker
+public sealed class JsonChecker : IChecker
 {
-    public static CheckResult Run(string rootDirectory)
+    public CheckResult Run(string rootDirectory)
     {
         var result = new CheckResult("JSON");
 

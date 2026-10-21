@@ -4,7 +4,7 @@ using CodeQuality.Utils;
 
 namespace CodeQuality.Checkers;
 
-public static class DebugLogChecker
+public sealed class DebugLogChecker : IChecker
 {
     private static readonly Regex DebugRegex =
         new(@"Debug\.(Log|LogWarning|LogError)\s*\(");
@@ -12,7 +12,7 @@ public static class DebugLogChecker
     private static readonly Regex CommentRegex =
         new(@"^\s*(//|///|/\*|\*)");
 
-    public static CheckResult Run(string rootDirectory)
+    public CheckResult Run(string rootDirectory)
     {
         var result = new CheckResult("Debug.Log");
 
