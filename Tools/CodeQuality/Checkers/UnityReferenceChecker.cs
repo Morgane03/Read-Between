@@ -34,8 +34,13 @@ public sealed class UnityReferenceChecker : IChecker
 
             var match = Regex.Match(
                 content,
-                @"^guid:\s*([a-f0-9]{32})$",
+                @"^guid:\s*([a-f0-9]{32}),\s*type:\s*(\d)$",
                 RegexOptions.Multiline);
+
+            var type = match.Groups[2].Value;
+
+            if (type == "3")
+                continue;
 
             if (match.Success)
                 existingGuids.Add(match.Groups[1].Value);
