@@ -34,13 +34,8 @@ public sealed class UnityReferenceChecker : IChecker
 
             var match = Regex.Match(
                 content,
-                @"^guid:\s*([a-f0-9]{32}),\s*type:\s*(\d)$",
+                @"^guid:\s*([a-f0-9]{32})$",
                 RegexOptions.Multiline);
-
-            var type = match.Groups[2].Value;
-
-            if (type == "3")
-                continue;
 
             if (match.Success)
                 existingGuids.Add(match.Groups[1].Value);
@@ -61,6 +56,22 @@ public sealed class UnityReferenceChecker : IChecker
                 foreach (Match match in GuidRegex.Matches(lines[i]))
                 {
                     var guid = match.Groups[1].Value;
+
+                    // Récupère le type s'il est présent
+                    var typeMatch = Regex.Match(
+                        lines[i],
+                        @"type:\s*(\d+)");
+
+                    if (typeMatch.Success)
+                    {
+                        var type = typeMatch.Groups[1].Value;
+
+                        // Les références vers les packages Unity
+                        // (scripts, shaders, compute shaders...)
+                        // sont généralement de type 3.
+                        if (type == "3")
+                            continue;
+                    }
 
                     if (existingGuids.Contains(guid))
                         continue;
