@@ -20,7 +20,7 @@ public static class FileScanner
         "/.github/",
         "/.vscode/",
         "./README.md",
-        " ./.gitignore",
+        "./.gitignore",
     };
 
 
