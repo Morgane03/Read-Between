@@ -19,9 +19,27 @@ public static class FileScanner
         "/.git/",
         "/.github/",
         "/.vscode/",
-        "./README.md",
-        "./.gitignore",
     };
+
+    private static readonly HashSet<string> IgnoredExtensions =
+    [
+        ".meta",
+        ".cs",
+        ".asmdef",
+        ".csproj",
+        ".sln",
+        ".md",
+        ".txt",
+        ".gitignore",
+        ".yml",
+        ".yaml"
+    ];
+
+    private static readonly HashSet<string> IgnoredFiles =
+    [
+        "README.md",
+        ".gitignore"
+    ];
 
 
     public static IEnumerable<string> GetFiles(
@@ -63,11 +81,14 @@ public static class FileScanner
         }
     }
 
-
     private static bool IsIgnored(string path)
     {
-        return IgnoredFolders.Any(folder =>
-            path.Contains(folder));
+        var fileName = Path.GetFileName(path);
+        var extension = Path.GetExtension(path);
+
+        return IgnoredFolders.Any(folder => path.Contains(folder))
+            || IgnoredExtensions.Contains(extension)
+            || IgnoredFiles.Contains(fileName);
     }
 
 
