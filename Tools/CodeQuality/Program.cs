@@ -12,7 +12,7 @@ IChecker[] checkers =
     new TodoChecker(),
     new JsonChecker(),
     new GuidChecker(),
-    new UnityReferenceChecker()
+    new LargeFileChecker
 ];
 
 bool hasErrors = false;
