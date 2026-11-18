@@ -13,6 +13,7 @@ IChecker[] checkers =
     new JsonChecker(),
     new GuidChecker(),
     new LargeFileChecker(),
+    new XmlChecker(),
 ];
 
 bool hasErrors = false;
