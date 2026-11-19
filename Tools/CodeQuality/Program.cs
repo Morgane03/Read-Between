@@ -19,7 +19,7 @@ IChecker[] checkers =
     new SinglePublicTypeChecker(),
     new EmptyIfChecker(),
     new EmptyLoopChecker(),
-    new RoslynChecker(),
+    new DotnetFormatChecker(),
 ];
 
 bool hasErrors = false;
