@@ -19,8 +19,11 @@ jobs:
         with:
           dotnet-version: "8.0.x"
 
+      - name: Restaurer les dépendances
+        run: dotnet restore Tools/CodeQuality/CodeQuality.csproj
+
       - name: Compiler CodeQuality
-        run: dotnet build Tools/CodeQuality/CodeQuality.csproj
+        run: dotnet build Tools/CodeQuality/CodeQuality.csproj --configuration Release --no-restore
 
       - name: Exécuter CodeQuality
-        run: dotnet run --project Tools/CodeQuality/CodeQuality.csproj
+        run: dotnet run --project Tools/CodeQuality/CodeQuality.csproj --configuration Release --no-build
