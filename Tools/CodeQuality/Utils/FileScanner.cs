@@ -38,7 +38,8 @@ public static class FileScanner
     private static readonly HashSet<string> IgnoredFiles =
     [
         "README.md",
-        ".gitignore"
+        ".gitignore",
+        ".editorconfig"
     ];
 
 
