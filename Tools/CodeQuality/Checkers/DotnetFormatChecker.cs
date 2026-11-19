@@ -13,57 +13,61 @@ public sealed class DotnetFormatChecker : IChecker
     {
         var result = new CheckResult("Roslyn");
 
-        var solution = Directory
+        var projects = Directory
             .EnumerateFiles(
-                Path.GetFullPath(rootDirectory),
-                "*.sln",
+                Directory.GetCurrentDirectory(),
+                "Assembly-CSharp*.csproj",
                 SearchOption.AllDirectories)
-            .FirstOrDefault();
+            .ToList();
 
-        if (solution is null)
+        if (projects.Count == 0)
         {
             result.Errors.Add(new CheckError(
                 "",
                 0,
-                "Aucune solution .sln trouvée.",
+                "Aucun projet Assembly-CSharp trouvé.",
                 ""));
 
             return result;
         }
 
-        var process = new Process
+        foreach (var project in projects)
         {
-            StartInfo = new ProcessStartInfo
+            var process = new Process
             {
-                FileName = "dotnet",
-                Arguments = $"format analyzers \"{solution}\" --verify-no-changes --severity warn --verbosity diagnostic",
-                WorkingDirectory = rootDirectory,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "dotnet",
+                    Arguments =
+                        $"format analyzers \"{project}\" --verify-no-changes --severity warn --verbosity diagnostic",
+                    WorkingDirectory = Directory.GetCurrentDirectory(),
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false
+                }
+            };
+
+            process.Start();
+
+            var output = process.StandardOutput.ReadToEnd();
+            output += Environment.NewLine;
+            output += process.StandardError.ReadToEnd();
+
+            process.WaitForExit();
+
+            foreach (var line in output.Split(Environment.NewLine))
+            {
+                var match = DiagnosticRegex.Match(line);
+
+                if (!match.Success)
+                    continue;
+
+                result.Errors.Add(new CheckError(
+                    match.Groups[1].Value.Replace('\\', '/'),
+                    int.Parse(match.Groups[2].Value),
+                    $"{match.Groups[5].Value} : {match.Groups[6].Value}",
+                    ""));
             }
-        };
-
-        process.Start();
-
-        var output = process.StandardOutput.ReadToEnd();
-        output += Environment.NewLine;
-        output += process.StandardError.ReadToEnd();
-
-        process.WaitForExit();
-
-        foreach (var line in output.Split(Environment.NewLine))
-        {
-            var match = DiagnosticRegex.Match(line);
-
-            if (!match.Success)
-                continue;
-
-            result.Errors.Add(new CheckError(
-                match.Groups[1].Value.Replace('\\', '/'),
-                int.Parse(match.Groups[2].Value),
-                $"{match.Groups[5].Value} : {match.Groups[6].Value}",
-                ""));
         }
 
         return result;
