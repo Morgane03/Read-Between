@@ -33,8 +33,7 @@ public sealed class DotnetFormatChecker : IChecker
             StartInfo = new ProcessStartInfo
             {
                 FileName = "dotnet",
-                Arguments =
-                    $"format analyzers \"{solution}\" --verify-no-changes --severity warn --verbosity diagnostic";
+                Arguments = $"format analyzers \"{solution}\" --verify-no-changes --severity warn --verbosity diagnostic",
                 WorkingDirectory = rootDirectory,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
