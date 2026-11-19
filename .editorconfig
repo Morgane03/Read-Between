@@ -1,0 +1,49 @@
+root = true
+
+[*.cs]
+
+# Toutes les règles Roslyn sont au minimum des warnings
+dotnet_analyzer_diagnostic.severity = warning
+
+#######################################
+# Performance
+#######################################
+
+dotnet_diagnostic.CA1822.severity = warning
+dotnet_diagnostic.CA1823.severity = warning
+dotnet_diagnostic.CA1825.severity = warning
+dotnet_diagnostic.CA1805.severity = warning
+
+#######################################
+# Qualité
+#######################################
+
+dotnet_diagnostic.CA1062.severity = warning
+
+#######################################
+# Style
+#######################################
+
+dotnet_diagnostic.IDE0005.severity = warning
+dotnet_diagnostic.IDE0051.severity = warning
+dotnet_diagnostic.IDE0060.severity = warning
+dotnet_diagnostic.IDE0044.severity = warning
+dotnet_diagnostic.IDE0090.severity = suggestion
+dotnet_diagnostic.IDE0300.severity = suggestion
+dotnet_diagnostic.IDE0161.severity = suggestion
+dotnet_diagnostic.IDE0066.severity = suggestion
+dotnet_diagnostic.IDE0007.severity = suggestion
+dotnet_diagnostic.IDE0008.severity = suggestion
+
+#######################################
+# Nommage
+#######################################
+
+dotnet_naming_rule.private_fields_should_be_camel.severity = warning
+dotnet_naming_rule.private_fields_should_be_camel.symbols = private_fields
+dotnet_naming_rule.private_fields_should_be_camel.style = camel
+
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+
+dotnet_naming_style.camel.capitalization = camel_case

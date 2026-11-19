@@ -14,7 +14,12 @@ IChecker[] checkers =
     new GuidChecker(),
     new LargeFileChecker(),
     new XmlChecker(),
-    new CSharpStyleChecker(),
+    new NamespaceChecker(),
+    new FileNameChecker(),
+    new SinglePublicTypeChecker(),
+    new EmptyIfChecker(),
+    new EmptyLoopChecker(),
+    new RoslynChecker(),
 ];
 
 bool hasErrors = false;
