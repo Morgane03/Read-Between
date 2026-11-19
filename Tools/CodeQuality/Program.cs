@@ -14,6 +14,7 @@ IChecker[] checkers =
     new GuidChecker(),
     new LargeFileChecker(),
     new XmlChecker(),
+    new CSharpStyleChecker(),
 ];
 
 bool hasErrors = false;
