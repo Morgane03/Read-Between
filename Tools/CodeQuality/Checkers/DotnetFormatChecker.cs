@@ -14,7 +14,10 @@ public sealed class DotnetFormatChecker : IChecker
         var result = new CheckResult("Roslyn");
 
         var solution = Directory
-            .EnumerateFiles(rootDirectory, "*.sln", SearchOption.TopDirectoryOnly)
+            .EnumerateFiles(
+                Path.GetFullPath(rootDirectory),
+                "*.sln",
+                SearchOption.AllDirectories)
             .FirstOrDefault();
 
         if (solution is null)
